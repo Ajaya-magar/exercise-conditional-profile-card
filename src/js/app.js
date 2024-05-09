@@ -21,28 +21,38 @@ import "../style/index.css";
         country: null,
         city: null
     }
+    ${variables.background}
  */
 function render(variables = {}) {
   console.log("These are the current variables: ", variables); // print on the console
   // here we ask the logical questions to make decisions on how to build the html
   // if includeCover==false then we reset the cover code without the <img> tag to make the cover transparent.
-  let cover = `<div class="cover"><img src="${variables.background}" /></div>`;
+  let cover = `<div class="cover"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRvWxQKRcPp56eR-B3YxkoCh0OQjlgyHBvgQ5DoC0arYw&s" /></div>`;
+
   if (variables.includeCover == false) cover = "<div class='cover'></div>";
 
-  // reset the website body with the new html output
+  variables.name === null && (variables.name = "first ");
+  variables.lastname === null && (variables.lastname = " last ");
+  variables.role === null && (variables.role = "job");
+  variables.city === null && (variables.city = "city");
+  variables.country === null && (variables.country = "country");
+
   document.querySelector("#widget_content").innerHTML = `<div class="widget">
-            ${cover}
-          <img src="${variables.avatarURL}" class="photo" />
-          <h1>Lucy Boilett</h1>
-          <h2>Web Developer</h2>
-          <h3>Miami, USA</h3>
-          <ul class="position-right">
+  ${cover}
+            <img src="https://ca.slack-edge.com/T0BFXMWMV-U06EC8SMPK2-2be3fb47704e-512" class="photo" />
+      
+
+            <h1>${variables.name} ${variables.lastname}</h1>
+            <h2>${variables.role}</h2>
+            <h3>${variables.city},${variables.country}</h3>
+          <ul class="${variables.socialMediaPosition}">
             <li><a href="https://twitter.com/4geeksacademy"><i class="fab fa-twitter"></i></a></li>
             <li><a href="https://github.com/4geeksacademy"><i class="fab fa-github"></i></a></li>
             <li><a href="https://linkedin.com/school/4geeksacademy"><i class="fab fa-linkedin"></i></a></li>
             <li><a href="https://instagram.com/4geeksacademy"><i class="fab fa-instagram"></i></a></li>
           </ul>
         </div>
+  
     `;
 }
 
@@ -65,7 +75,7 @@ window.onload = function() {
     linkedin: null,
     instagram: null,
     name: null,
-    lastName: null,
+    lastname: null,
     role: null,
     country: null,
     city: null
@@ -75,6 +85,7 @@ window.onload = function() {
   document.querySelectorAll(".picker").forEach(function(elm) {
     elm.addEventListener("change", function(e) {
       // <- add a listener to every input
+      console.log("Input event triggered");
       const attribute = e.target.getAttribute("for"); // when any input changes, collect the value
       let values = {};
       values[attribute] =
@@ -85,6 +96,8 @@ window.onload = function() {
           : this.value == "false"
           ? false
           : this.value;
+
+      console.log("Updated variables:", values);
       render(Object.assign(window.variables, values)); // render again the card with new values
     });
   });
